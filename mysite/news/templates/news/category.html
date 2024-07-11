@@ -10,10 +10,10 @@
 <body>
     <div class="navbar">
         {% for cat in categories%}
-            <a href="/category/{{ cat.pk }}/">{{ cat }}</a>
+            <a href="/category/{{ cat.pk }}">{{ cat }}</a>
         {% endfor %}
     </div class="news">
-    <h1>{{ title }}</h1>
+    <h1>{{ category.title }}</h1>
     {% for item in news %}
         <div>
             <p>{{ item.title }}</p>
