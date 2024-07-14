@@ -13,7 +13,7 @@
         {% for cat in categories%}
             <a href="{% url 'category' cat.pk %}">{{ cat }}</a>
         {% endfor %}
-        <a href="{% url 'add_news' %}">Add new</a>
+        <a href="{% url 'add_new' %}">Add new</a>
     </div class="news">
     <h1>{{ title }}</h1>
     {% for item in news %}

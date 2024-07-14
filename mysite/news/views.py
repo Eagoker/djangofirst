@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import News, Category
-from .forms import NewsForm
+from .forms import NewForm
 
 
 def index(request):
@@ -34,9 +34,12 @@ def view_news(request, news_id):
     return render(request, template_name='news/view_news.html', context=context)
 
 
-def add_news(request):
+def add_new(request):
     if request.method == 'POST':
-        pass
+        form = NewForm(request.POST)
+        if form.is_valid():
+            new = form.save()
+            return redirect(new)
     else:
-        form = NewsForm()
-    return render(request=request, template_name='news/add_news.html', context={'form': form})
+        form = NewForm()
+    return render(request, 'news/add_new.html', context={'form': form})
