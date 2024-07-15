@@ -1,45 +1,41 @@
-from django.shortcuts import render, redirect
-from .models import News, Category
-from .forms import NewForm
+from .models import *
+from .forms import *
+from django.views.generic import ListView, DetailView, CreateView
 
 
-def index(request):
-    news = News.objects.all()
-    categories = Category.objects.all()
-    context = {
-        'news': news,
-        'title': 'News list',
-        'categories': categories,
-    }
-    return render(request, 'news/index.html', context)
+class NewsList(ListView):
+    model = News
+    template_name = 'news/index.html'
+    context_object_name = 'news'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Main'
+        categories = Category.objects.all()
+        context['categories'] = categories
+        return context
+    
+    def get_queryset(self):
+        return News.objects.filter(is_published=True)
 
 
-def get_category(request, category_id):
-    news = News.objects.filter(category_id=category_id)
-    category = Category.objects.get(pk=category_id)
-    categories = Category.objects.all()
-    context = {
-        'news': news,
-        'category': category,
-        'categories': categories,
-    }
-    return render(request, template_name='news/category.html', context=context)
+class NewsCategory(ListView):
+    model = News
+    template_name = 'news/index.html'
+    context_object_name = 'news'
+    
+    def get_queryset(self):
+        return News.objects.filter(category__id=self.kwargs['category_id'], is_published=True)
 
 
-def view_news(request, news_id):
-    news_item = News.objects.get(pk=news_id)
-    context = {
-        'news_item': news_item
-    }
-    return render(request, template_name='news/view_news.html', context=context)
+class ViewNews(DetailView):
+    model = News
+    template_name = 'news/view_news.html'
+    pk_url_kwarg = 'news_id'
+    context_object_name = 'news_item'
 
 
-def add_new(request):
-    if request.method == 'POST':
-        form = NewForm(request.POST)
-        if form.is_valid():
-            new = form.save()
-            return redirect(new)
-    else:
-        form = NewForm()
-    return render(request, 'news/add_new.html', context={'form': form})
+class AddNew(CreateView):
+    form_class = NewForm
+    template_name = 'news/add_new.html'
+    
