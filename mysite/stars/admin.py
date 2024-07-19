@@ -3,9 +3,10 @@ from .models import Stars, Profession
 
 
 class StarsAdmin(admin.ModelAdmin):
-    list_display = ("name", "surname", "age", "condition", "profession")
+    list_display = ("name", "surname", "age", "condition", "profession", "views")
     list_display_links = ('name',)
-
+    readonly_fields = ('profession', 'views')
+    
 
 class ProfessionAdmin(admin.ModelAdmin):
     list_display = ("profession",)

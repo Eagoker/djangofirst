@@ -8,16 +8,17 @@ class Stars(models.Model):
     age = models.IntegerField()
     condition = models.FloatField()
     profession = models.ForeignKey('Profession', on_delete=models.PROTECT, null=True)
+    views = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Звезда'
         verbose_name_plural = 'Звезды'
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.surname}"
 
     def get_absolute_url(self):
-        return reverse('view_star', kwargs={'star_id': self.pk})
+        return reverse('main', kwargs={'star_id': self.pk})
 
 
 class Profession(models.Model):

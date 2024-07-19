@@ -6,5 +6,7 @@ urlpatterns = [
     path('profession/<int:profession_id>/', ByProfession.as_view(), name='by_profession'),
     path('add-star/', AddStar.as_view(), name='add_star'),
     path('view-star/<int:star_id>/', ViewStar.as_view(), name='view_star'),
-
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
 ]
